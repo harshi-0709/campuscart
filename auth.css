@@ -1,0 +1,104 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Center container */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* The organic blob */
+.blob-card {
+  background: #ffd400;
+
+  width: 500px;          /* bigger width */
+  padding: 70px 60px;    /* more inner spacing */
+
+  text-align: center;
+
+  border-radius: 55% 45% 60% 40% / 60% 50% 50% 40%;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.12);
+
+  transition: 0.4s ease;
+}
+
+.blob-card:hover {
+  border-radius: 50% 60% 40% 60% / 50% 40% 60% 50%;
+}
+
+/* Heading */
+.blob-card h2 {
+  margin-bottom: 30px;
+  font-weight: 800;
+}
+
+/* Inputs */
+form input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  outline: none;
+}
+
+form input:focus {
+  border: 1px solid #0055ff;
+}
+
+/* Button */
+form button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  background: #0055ff;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+form button:hover {
+  background: #003bb5;
+}
+
+.switch {
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.switch a {
+  color: #0055ff;
+  text-decoration: none;
+  font-weight: 600;
+}
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.blob-card {
+  width: 320px;   /* fixed width */
+}
+
+.blob-card h2 {
+  text-align: left;   /* 🔥 key fix */
+  margin-bottom: 20px;
+  font-weight: 800;
+}
+
+.blob-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}

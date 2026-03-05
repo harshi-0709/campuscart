@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Campus Market</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header class="market-header">
+    <div class="header-left">
+      <h1 class="brand-logo">Campus Cart</h1>
+    </div>
+    <div class="user-actions" id="userActions"></div>
+    <div class="sell-widget" id="sellStrip">
+      <div class="sell-text">
+        <strong>Want to sell something?</strong>
+      </div>
+      <div class="sell-buttons">
+        <a href="create.html" class="sell-yes">Yes</a>
+        <button class="sell-maybe" onclick="closeSell()">Maybe Later </button>
+      </div>
+    </div>
+  </header>
+
+
+  
+
+  <!-- MARKETPLACE -->
+  <main class="marketplace">
+    <h2>Latest Listings</h2>
+    <div id="listings" class="grid"></div>
+  </main>
+
+  <script src="app.js"></script>
+  <script>
+    loadListings();
+    const token = localStorage.getItem("token");
+const sellStrip = document.getElementById("sellStrip");
+
+if (token) {
+  document.getElementById("userActions").innerHTML = `
+    <a href="my-buys.html" class="btn-small">Your Buys</a>
+    <a href="my-purchases.html" class="btn-small">Your Purchases</a>
+    <button onclick="logout()" class="btn-small logout">Logout</button>
+  `;
+} else {
+  sellStrip.style.display = "none";
+}
+
+
+    function closeSell() {
+      const strip = document.getElementById("sellStrip");
+      strip.style.height = "0";
+      strip.style.opacity = "0";
+      strip.style.padding = "0";
+      strip.style.overflow = "hidden";
+      strip.style.transition = "all 0.4s ease";
+    }
+  </script>
+
+</body>
+  
+
+
+</html>

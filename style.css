@@ -1,0 +1,270 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+
+  background-color: #ffffff;
+  background-image: radial-gradient(rgba(0,85,255,0.15) 3px, transparent 3px);
+  background-size: 40px 40px;
+}
+
+nav a, nav button {
+  margin: 0 5px;
+  color: white;
+  text-decoration: none;
+}
+main { padding: 20px; }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 15px;
+}
+.card {
+  background: white;
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+}
+.card img {
+  max-width: 100%;
+  border-radius: 6px;
+  height: 150px;
+  object-fit: cover;
+}
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 300px;
+}
+input, textarea, button {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+button {
+  background: #0055aa;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+button:hover { background: #004080; }
+/* HERO SECTION */
+.hero {
+  height: 25vh; /* 1/4th of screen */
+  background: radial-gradient(circle at center, 
+              #1e90ff 0%, 
+              #0055aa 50%, 
+              #002244 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: white;
+}
+
+/* TEXT */
+.hero-content h1 {
+  font-size: 3.2rem;
+  font-weight: 900;
+  margin: 0;
+  letter-spacing: 1px;
+}
+
+.hero-content p {
+  margin-top: 8px;
+  font-size: 1.2rem;
+  opacity: 0.9;
+}
+
+/* BUTTON CONTAINER */
+.hero-buttons {
+  margin-top: 18px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+/* BUTTON STYLE */
+.btn {
+  padding: 8px 18px;
+  background: white;
+  color: #0055aa;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 25px;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  background: #e6f2ff;
+  transform: translateY(-2px);
+}
+
+/* Special Register Button */
+.btn-light {
+  background: transparent;
+  border: 2px solid white;
+  color: white;
+}
+
+.btn-light:hover {
+  background: white;
+  color: #0055aa;
+}
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+
+  /* Base background */
+  background-color: #ffffff;
+
+  /* Blue polka dots */
+  background-image: radial-gradient(#0055ff 2px, transparent 2px);
+  background-size: 40px 40px;
+
+  min-height: 100vh;
+}
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+.sell-widget {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+
+  background: linear-gradient(90deg, #0055ff, #003bb5);
+  color: white;
+
+  padding: 18px 25px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.sell-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1100px;
+  margin: auto;
+}
+
+.sell-text h3 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.sell-text p {
+  margin: 5px 0 0 0;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.sell-buttons {
+  display: flex;
+  gap: 15px;
+}
+
+/* YES BUTTON (Blue but lighter) */
+.sell-yes {
+   background: white;
+  color: #0055ff;
+  padding: 8px 18px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.sell-yes:hover {
+  background: #e6ecff;
+}
+
+/* MAYBE BUTTON (Yellow) */
+.sell-maybe {
+  background: #ffd400;
+  color: #003366;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.sell-maybe:hover {
+  background: #ffcc00;
+}
+
+/* MARKETPLACE */
+.marketplace {
+  padding: 10px 40px 40px 40px;  
+}
+/* LOGO */
+.logo {
+  height: 55px;
+}
+.brand-logo {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 900;
+  font-size: 1.6rem;
+  color: #0055ff;
+}
+.sell-widget {
+  transition: all 0.4s ease;
+}
+
+.sell-widget.hide {
+  opacity: 0;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+}
+.market-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 40px;
+  flex-wrap: nowrap;  
+}
+.sell-widget {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  white-space: nowrap;   /* 🔥 keeps text in one line */
+}
+.marketplace h2 {
+  font-size: 2.4rem;
+  font-weight: 900;
+  color: #000000;
+  margin-bottom: 20px;
+}
+.user-actions {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.btn-small {
+  padding: 6px 14px;
+  background: #0055ff;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.btn-small:hover {
+  background: #003bb5;
+}
+
+.logout {
+  background: #ff4d4d;
+}
