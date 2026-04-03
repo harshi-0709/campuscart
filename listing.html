@@ -2,151 +2,44 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Create Listing</title>
-  <style>
-    /* 1. Dot Grid Background */
-    body {
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      font-family: 'Inter', 'Segoe UI', sans-serif;
-      background-color: #ffffff;
-      /* Creating the dot pattern */
-      background-image: radial-gradient(#0066ff 1.5px, transparent 1.5px);
-      background-size: 35px 35px;
-    }
-
-    /* 2. Top-Left Back Button */
-    .back-link {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      text-decoration: none;
-      color: #6610f2;
-      font-weight: bold;
-      font-size: 1.1rem;
-    }
-
-    /* 3. Your Custom Blob Card Styling */
-    .blob-card {
-      background: #ffd400;
-      width: 500px;
-      padding: 70px 60px;
-      text-align: center;
-      border-radius: 55% 45% 60% 40% / 60% 50% 50% 40%;
-      box-shadow: 0 25px 60px rgba(0,0,0,0.12);
-      transition: 0.4s ease;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .blob-card:hover {
-      border-radius: 50% 60% 40% 60% / 50% 40% 60% 50%;
-    }
-
-    .blob-card h2 {
-      margin-bottom: 30px;
-      font-weight: 800;
-      font-size: 2rem;
-      color: #000;
-    }
-
-    /* 4. Form & Inputs */
-    #listingForm {
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-      gap: 15px;
-    }
-
-    input, textarea {
-      width: 100%;
-      padding: 14px 20px;
-      border: none;
-      border-radius: 12px;
-      font-size: 1rem;
-      box-sizing: border-box; /* Prevents input from overflowing */
-      outline: none;
-    }
-
-    input[type="file"] {
-      background: #fff;
-      font-size: 0.8rem;
-    }
-
-    /* 5. Blue Action Button */
-    .submit-btn {
-      background-color: #0062ff;
-      color: white;
-      border: none;
-      padding: 15px;
-      border-radius: 12px;
-      font-weight: bold;
-      font-size: 1rem;
-      cursor: pointer;
-      margin-top: 10px;
-      transition: transform 0.2s, background 0.2s;
-    }
-
-    .submit-btn:hover {
-      background-color: #004ecc;
-      transform: scale(1.02);
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Listing — Campus Cart</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <a href="index.html" class="back-link">← Back</a>
+  <header class="market-header">
+    <a href="landing.html" class="brand-logo">Campus Cart</a>
+    <div id="userActions" class="user-actions"></div>
+  </header>
 
-  <div class="blob-card">
-    <h2>Create New Listing</h2>
-    <form id="listingForm">
-      <input type="text" name="title" placeholder="Item Title" required>
-      <textarea name="description" placeholder="Description" rows="3" required></textarea>
-      <input type="number" name="price" placeholder="Price" required>
-      <input type="file" id="imageInput" accept="image/*" required>
-      <button type="submit" class="submit-btn">Create Listing</button>
-    </form>
+  <div class="listing-page">
+    <a href="index.html" class="back-link">← Back to listings</a>
+
+    <div id="listing-gallery" class="listing-gallery">
+      <div class="skel-img" style="height:280px;border-radius:14px;"></div>
+    </div>
+
+    <div class="listing-info">
+      <h1 id="listing-title">Loading...</h1>
+      <div class="listing-price" id="listing-price"></div>
+
+      <div class="listing-meta">
+        <span class="meta-chip" id="listing-category"></span>
+        <span class="meta-chip">👤 <span id="listing-seller"></span></span>
+        <span class="meta-chip">🏫 <span id="listing-college"></span></span>
+      </div>
+
+      <p class="listing-desc" id="listing-desc"></p>
+
+      <a class="contact-btn" id="contact-btn" href="#" target="_blank">
+        💬 Contact on WhatsApp
+      </a>
+    </div>
   </div>
 
-  <script>
-    document.getElementById("listingForm").addEventListener("submit", function(e){
-      e.preventDefault();
-
-      const title = this.title.value;
-      const description = this.description.value;
-      const price = this.price.value;
-      const file = document.getElementById("imageInput").files[0];
-
-      if (!file) return alert("Please upload an image");
-
-      const reader = new FileReader();
-      reader.onload = function() {
-        const imageBase64 = reader.result;
-
-        const listing = {
-          id: Date.now(),
-          title,
-          description,
-          price,
-          image: imageBase64
-        };
-
-        let listings = JSON.parse(localStorage.getItem("listings")) || [];
-        listings.push(listing);
-        localStorage.setItem("listings", JSON.stringify(listings));
-
-        alert("Listing Created!");
-        window.location.href = "index.html";
-      };
-
-      reader.readAsDataURL(file);
-    });
-  </script>
-
+  <script src="app.js"></script>
+  <script>loadListing();</script>
 </body>
 </html>

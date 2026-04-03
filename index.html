@@ -3,31 +3,56 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Campus Market</title>
+  <title>Campus Cart — Marketplace</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
   <header class="market-header">
-    <div class="header-left">
-      <h1 class="brand-logo">Campus Cart</h1>
-    </div>
-    <div class="user-actions" id="userActions"></div>
-    <div class="sell-widget" id="sellStrip">
-      <div class="sell-text">
-        <strong>Want to sell something?</strong>
-      </div>
-      <div class="sell-buttons">
-        <a href="create.html" class="sell-yes">Yes</a>
-        <button class="sell-maybe" onclick="closeSell()">Maybe Later </button>
-      </div>
-    </div>
+    <a href="landing.html" class="brand-logo">Campus Cart</a>
+    <div id="userActions" class="user-actions"></div>
   </header>
 
+  <!-- SELL STRIP -->
+  <div class="sell-widget" id="sellStrip">
+    <div class="sell-text">
+      <strong>✨ Got something to sell?</strong>
+    </div>
+    <div class="sell-buttons">
+      <a href="create.html" class="sell-yes">List it now →</a>
+      <button class="sell-maybe" onclick="closeSell()">Maybe Later</button>
+    </div>
+  </div>
 
-  
+  <!-- SEARCH + FILTER -->
+  <div class="search-bar">
+    <div class="search-input-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchInput" placeholder="Search listings..." />
+    </div>
+    <select class="filter-select" id="priceFilter">
+      <option value="">Any Price</option>
+      <option value="0-500">Under ₹500</option>
+      <option value="500-2000">₹500 – ₹2000</option>
+      <option value="2000-10000">₹2000 – ₹10,000</option>
+      <option value="10000-">₹10,000+</option>
+    </select>
+  </div>
 
-  <!-- MARKETPLACE -->
+  <!-- CATEGORY PILLS -->
+  <div class="category-pills" id="categoryPills">
+    <button class="cat-pill active" data-cat="">All</button>
+    <button class="cat-pill" data-cat="Books">📚 Books</button>
+    <button class="cat-pill" data-cat="Electronics">💻 Electronics</button>
+    <button class="cat-pill" data-cat="Furniture">🪑 Furniture</button>
+    <button class="cat-pill" data-cat="Clothing">👕 Clothing</button>
+    <button class="cat-pill" data-cat="Sports">⚽ Sports</button>
+    <button class="cat-pill" data-cat="Food">🍕 Food</button>
+    <button class="cat-pill" data-cat="Other">📦 Other</button>
+  </div>
+
+  <!-- LISTINGS GRID -->
   <main class="marketplace">
     <h2>Latest Listings</h2>
     <div id="listings" class="grid"></div>
@@ -35,33 +60,56 @@
 
   <script src="app.js"></script>
   <script>
-    loadListings();
-    const token = localStorage.getItem("token");
-const sellStrip = document.getElementById("sellStrip");
+    let searchTimer;
+    let activeCategory = "";
 
-if (token) {
-  document.getElementById("userActions").innerHTML = `
-    <a href="my-buys.html" class="btn-small">Your Buys</a>
-    <a href="my-purchases.html" class="btn-small">Your Purchases</a>
-    <button onclick="logout()" class="btn-small logout">Logout</button>
-  `;
-} else {
-  sellStrip.style.display = "none";
-}
+    // Load from URL param (coming from landing page)
+    const urlCat = new URLSearchParams(location.search).get("category");
+    if (urlCat) activeCategory = urlCat;
 
-
-    function closeSell() {
-      const strip = document.getElementById("sellStrip");
-      strip.style.height = "0";
-      strip.style.opacity = "0";
-      strip.style.padding = "0";
-      strip.style.overflow = "hidden";
-      strip.style.transition = "all 0.4s ease";
+    function getFilters() {
+      const search = document.getElementById("searchInput").value.trim();
+      const price = document.getElementById("priceFilter").value;
+      const params = {};
+      if (search) params.search = search;
+      if (activeCategory) params.category = activeCategory;
+      if (price) {
+        const [min, max] = price.split("-");
+        if (min) params.minPrice = min;
+        if (max) params.maxPrice = max;
+      }
+      return params;
     }
+
+    function refreshPills() {
+      document.querySelectorAll(".cat-pill").forEach(p => {
+        p.classList.toggle("active", p.dataset.cat === activeCategory);
+      });
+    }
+
+    // Category pills
+    document.getElementById("categoryPills").addEventListener("click", (e) => {
+      if (!e.target.classList.contains("cat-pill")) return;
+      activeCategory = e.target.dataset.cat;
+      refreshPills();
+      loadListings(getFilters());
+    });
+
+    // Search input (debounced)
+    document.getElementById("searchInput").addEventListener("input", () => {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(() => loadListings(getFilters()), 400);
+    });
+
+    // Price filter
+    document.getElementById("priceFilter").addEventListener("change", () => {
+      loadListings(getFilters());
+    });
+
+    // Init
+    refreshPills();
+    loadListings(getFilters());
   </script>
 
 </body>
-  
-
-
 </html>

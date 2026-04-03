@@ -2,151 +2,123 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Create Listing</title>
-  <style>
-    /* 1. Dot Grid Background */
-    body {
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      font-family: 'Inter', 'Segoe UI', sans-serif;
-      background-color: #ffffff;
-      /* Creating the dot pattern */
-      background-image: radial-gradient(#0066ff 1.5px, transparent 1.5px);
-      background-size: 35px 35px;
-    }
-
-    /* 2. Top-Left Back Button */
-    .back-link {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      text-decoration: none;
-      color: #6610f2;
-      font-weight: bold;
-      font-size: 1.1rem;
-    }
-
-    /* 3. Your Custom Blob Card Styling */
-    .blob-card {
-      background: #ffd400;
-      width: 500px;
-      padding: 70px 60px;
-      text-align: center;
-      border-radius: 55% 45% 60% 40% / 60% 50% 50% 40%;
-      box-shadow: 0 25px 60px rgba(0,0,0,0.12);
-      transition: 0.4s ease;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .blob-card:hover {
-      border-radius: 50% 60% 40% 60% / 50% 40% 60% 50%;
-    }
-
-    .blob-card h2 {
-      margin-bottom: 30px;
-      font-weight: 800;
-      font-size: 2rem;
-      color: #000;
-    }
-
-    /* 4. Form & Inputs */
-    #listingForm {
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-      gap: 15px;
-    }
-
-    input, textarea {
-      width: 100%;
-      padding: 14px 20px;
-      border: none;
-      border-radius: 12px;
-      font-size: 1rem;
-      box-sizing: border-box; /* Prevents input from overflowing */
-      outline: none;
-    }
-
-    input[type="file"] {
-      background: #fff;
-      font-size: 0.8rem;
-    }
-
-    /* 5. Blue Action Button */
-    .submit-btn {
-      background-color: #0062ff;
-      color: white;
-      border: none;
-      padding: 15px;
-      border-radius: 12px;
-      font-weight: bold;
-      font-size: 1rem;
-      cursor: pointer;
-      margin-top: 10px;
-      transition: transform 0.2s, background 0.2s;
-    }
-
-    .submit-btn:hover {
-      background-color: #004ecc;
-      transform: scale(1.02);
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Listing — Campus Cart</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <a href="index.html" class="back-link">← Back</a>
+  <header class="market-header">
+    <a href="landing.html" class="brand-logo">Campus Cart</a>
+    <div id="userActions" class="user-actions"></div>
+  </header>
 
-  <div class="blob-card">
-    <h2>Create New Listing</h2>
-    <form id="listingForm">
-      <input type="text" name="title" placeholder="Item Title" required>
-      <textarea name="description" placeholder="Description" rows="3" required></textarea>
-      <input type="number" name="price" placeholder="Price" required>
-      <input type="file" id="imageInput" accept="image/*" required>
-      <button type="submit" class="submit-btn">Create Listing</button>
+  <div class="create-page">
+    <a href="index.html" class="back-link">← Back</a>
+    <h2>List Something 🛍️</h2>
+
+    <form id="listingForm" class="create-form">
+      <div class="form-group">
+        <label>Item Title *</label>
+        <input type="text" name="title" placeholder="e.g. Data Structures textbook" required>
+      </div>
+      <div class="form-group">
+        <label>Category *</label>
+        <select name="category" required>
+          <option value="">Select category</option>
+          <option value="Books">📚 Books</option>
+          <option value="Electronics">💻 Electronics</option>
+          <option value="Furniture">🪑 Furniture</option>
+          <option value="Clothing">👕 Clothing</option>
+          <option value="Sports">⚽ Sports</option>
+          <option value="Food">🍕 Food</option>
+          <option value="Other">📦 Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Description *</label>
+        <textarea name="description" placeholder="Describe the condition, how old it is, etc." required></textarea>
+      </div>
+      <div class="form-group">
+        <label>Price (₹) *</label>
+        <input type="number" name="price" placeholder="0" required min="0">
+      </div>
+      <div class="form-group">
+        <label>Images (up to 5)</label>
+        <input type="file" name="images" id="imageInput" accept="image/*" multiple>
+      </div>
+
+      <!-- Image preview -->
+      <div id="imagePreview" style="display:flex;gap:10px;flex-wrap:wrap;"></div>
+
+      <div class="error-msg" id="errorMsg"></div>
+      <button type="submit" class="submit-btn" id="submitBtn">Post Listing</button>
     </form>
   </div>
 
+  <script src="app.js"></script>
   <script>
-    document.getElementById("listingForm").addEventListener("submit", function(e){
+    const API_BASE = "http://localhost:5000/api";
+
+    // Redirect if not logged in
+    if (!localStorage.getItem("token")) {
+      alert("Please login to create a listing");
+      window.location.href = "login.html";
+    }
+
+    // Image preview
+    document.getElementById("imageInput").addEventListener("change", (e) => {
+      const preview = document.getElementById("imagePreview");
+      preview.innerHTML = "";
+      Array.from(e.target.files).slice(0, 5).forEach(file => {
+        const url = URL.createObjectURL(file);
+        const img = document.createElement("img");
+        img.src = url;
+        img.style.cssText = "width:80px;height:80px;object-fit:cover;border-radius:8px;border:2px solid #0a0a0f;";
+        preview.appendChild(img);
+      });
+    });
+
+    // Form submit
+    document.getElementById("listingForm").addEventListener("submit", async (e) => {
       e.preventDefault();
+      const btn = document.getElementById("submitBtn");
+      const errMsg = document.getElementById("errorMsg");
 
-      const title = this.title.value;
-      const description = this.description.value;
-      const price = this.price.value;
-      const file = document.getElementById("imageInput").files[0];
+      btn.textContent = "Posting...";
+      btn.disabled = true;
+      errMsg.style.display = "none";
 
-      if (!file) return alert("Please upload an image");
+      const formData = new FormData(e.target);
+      const files = document.getElementById("imageInput").files;
+      // FormData already includes files from the <input name="images">
 
-      const reader = new FileReader();
-      reader.onload = function() {
-        const imageBase64 = reader.result;
+      try {
+        const res = await fetch(`${API_BASE}/listings`, {
+          method: "POST",
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+          body: formData,
+        });
 
-        const listing = {
-          id: Date.now(),
-          title,
-          description,
-          price,
-          image: imageBase64
-        };
+        const json = await res.json();
 
-        let listings = JSON.parse(localStorage.getItem("listings")) || [];
-        listings.push(listing);
-        localStorage.setItem("listings", JSON.stringify(listings));
-
-        alert("Listing Created!");
-        window.location.href = "index.html";
-      };
-
-      reader.readAsDataURL(file);
+        if (res.ok) {
+          alert("Listing created! 🎉");
+          window.location.href = "index.html";
+        } else {
+          errMsg.textContent = json.message || "Failed to create listing";
+          errMsg.style.display = "block";
+          btn.textContent = "Post Listing";
+          btn.disabled = false;
+        }
+      } catch (err) {
+        errMsg.textContent = "Server error. Is the backend running?";
+        errMsg.style.display = "block";
+        btn.textContent = "Post Listing";
+        btn.disabled = false;
+      }
     });
   </script>
-
 </body>
 </html>
